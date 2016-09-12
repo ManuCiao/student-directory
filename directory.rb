@@ -22,10 +22,10 @@ def print_header
   puts "The students of my cohort at Makers Academy"
   puts "-------------"
 end
-
+#Add the each.with_index(1) to start the list of students from 1  
 def print(students)
-  students.each do |student|
-    puts "#{student[:name]} (#{student[:cohort]} cohort)"
+  students.each.with_index(1) do |student, index|
+    puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)"
   end
 end
 
