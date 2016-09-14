@@ -23,29 +23,28 @@ def print_header
   puts "The students of my cohort at Makers Academy"
   puts "-------------"
 end
-#8.1- Add the each.with_index(1) to start the list of students from 1  
-#8.2 - Only print the students whose name begins with a specific letter
+
+#8.1
 def print(students)
     students.each.with_index(1) do |student, index|
       puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)"      
     end
 end
 
-#8.1- Add the each.with_index(1) to start the list of students from 1  
-#8.2 - Only print the students whose name begins with a specific letter
-#8.3 - Only print the students whose name is shorter than 12 characters
-def start_with(students)
+#8.2
+def start_with(students) 
   puts "Call Students'names with the initial letter:"
   letter = gets.chomp
   students.each.with_index(1) do |student, index|
     if student[:name][0] == letter
       puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)"      
+    break
     end
   end
 end
 
+#8.3
 def short_name_12(students)
-  quit if students.empty?
   puts "Call Students'names that are shorten than 12 characthers!"
   students.each.with_index(1) do |student, index|
     if student[:name].length < 12
@@ -54,6 +53,14 @@ def short_name_12(students)
   end
 end
 
+#8.4
+def print_while(students)
+  index = 0
+  while index < students.length
+    puts "#{index + 1}. #{students[index][:name]} (#{students[index][:cohort]} cohort)"      
+    index += 1
+  end
+end
 
 def print_footer(students)
   puts "Overall, we have #{students.count} great students"
@@ -65,5 +72,6 @@ print(students)
 
 #start_with(students)
 #short_name_12(students)
+print_while(students)
 
 print_footer(students)
