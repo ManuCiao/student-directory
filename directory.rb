@@ -5,10 +5,19 @@ def input_students
   students = []
   # get the first name
   name = gets.chomp
+
   # while the name is not empty, repeat this code
   while !name.empty? do  
+    puts "Which is the gender of the current Student? Enter male or female"
+    gender = gets.chomp
+    if gender != 'male' && gender != 'female' && gender == nil
+      puts "Gender must be 'male' or 'female', Try again.."
+      gender = gets.chomp
+    end
+      
+
     # add the student hash to the array
-    students << {name: name, cohort: :September}
+    students << {name: name, cohort: :September, gender: gender, age}
     puts "Now we have #{students.count} students"
     puts "Please keep entering more names of the students or hit return twice to exit"
     # get another name from the user
@@ -20,15 +29,16 @@ def input_students
 end
 
 def print_header
-  puts "The students of my cohort at Makers Academy"
-  puts "-------------"
+  puts "The students of my cohort at Makers Academy".center(50)
+  puts "-------------".center(50)
+  puts
 end
 
 #8.1
 def print(students)
-    students.each.with_index(1) do |student, index|
-      puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)"      
-    end
+  students.each.with_index(1) do |student, index|
+    puts "#{index}. #{student[:name].capitalize!} - (#{student[:cohort]} cohort), #{student[:gender]}"      
+  end
 end
 
 #8.2
@@ -72,6 +82,6 @@ print(students)
 
 #start_with(students)
 #short_name_12(students)
-print_while(students)
+#print_while(students)
 
 print_footer(students)
