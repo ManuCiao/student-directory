@@ -35,8 +35,8 @@ def process(selection)
   end
 end
 
-## INPUT STUDENTS ##
-def input_students
+## INPUT STUDENTS WITH DEFAULT VALUES##
+def input_students_default
   puts "Please enter the details of each student. To finish, just hit return twice"
   default = :September
   loop do 
@@ -60,6 +60,11 @@ def input_students
   end
   # return the array of students
   @students
+end
+
+##  APPEND STUDENTS  ##
+def students_append(name, cohort, gender, nationality)
+  @students << {name: name, cohort: cohort, gender: gender, nationality: nationality}
 end
 
 ## SHOW STUDENTS ##
@@ -99,6 +104,8 @@ end
 
 ## PRINT SAVE STUDENTS ##
 def save_students
+  puts "Give the name of the file you want to save: "
+  filename = STDIN.gets.chomp
   # open the file for writing
   file = File.open("students.csv", "w")
   # iterate over the array of students
@@ -112,10 +119,14 @@ end
 
 ## LOAD STUDENTS ##
 def load_students
+  if filename = "students.csv"
+    puts "Which is the file you want to load? Hit 'Enter' to finish."
+    filename = STDIN.gets.chomp
+  end
   file = File.open("students.csv","r")
   file.readlines.each do |line|
-  name, cohort, gender, nationality = line.chomp.split(', ')
-    @students << {name: name, cohort: cohort, gender: gender, nationality: nationality.to_sym}
+    name, cohort, gender, nationality = line.chomp.split(', ')
+    students_append(name, cohort, gender, nationality)
   end
   file.close
 end
@@ -136,7 +147,7 @@ end
 #8.2
 def start_with(students) 
   puts "Call Students'names with the initial letter:"
-  letter = gets.chomp
+  letter = STDIN.gets.chomp
   @students.each.with_index(1) do |student, index|
     if student[:name][0] == letter
       puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)"      
