@@ -26,6 +26,18 @@ def input_students
   @students
 end
 
+def save_students
+  # open the file for writing
+  file = File.open("students.csv", "w")
+  # iterate over the array of students
+  @students.each do |student|
+    student_data = [student[:Name], student[:Cohort], student[:Gender], student[:Nationality]]
+    csv_line = student_data.join(", ")
+    file.puts csv_line
+  end
+  file.close
+end
+
 def print_header
   if @students.count <= 1
     puts "The student of my cohort at Makers Academy is ".center(100)
@@ -74,7 +86,6 @@ def print_while(students)
   end
 end
 
-
 #8.8
 def group_by_cohort(students)
   
@@ -95,7 +106,8 @@ end
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "9. Exit" # 9 because we'll be adding more items
+  puts "3. Save the list to students.csv"
+  puts "9. Exit" # 9 because we'll be adding more items  
 end
 
 def show_students
@@ -110,13 +122,14 @@ def process(selection)
     input_students
   when "2"
     show_students
+  when "3"
+    save_students
   when "9"
     exit # this will cause the program to terminate
   else
     puts "I don't know what you meant, try again"
   end
 end
-
 
 def print_footer
   footer_title = "Overall, we have #{@students.count} great students"
