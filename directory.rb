@@ -4,7 +4,7 @@ def input_students
   puts "Please enter the details of each student. To finish, just hit return twice"
   default = :September
   loop do 
-    details = {Name: "Assign a value", Cohort: default, Gender: "Assign a value", Nationality: "Assign a value"}
+    details = {name: "Assign a value", cohort: default, gender: "Assign a value", nationality: "Assign a value"}
     details.each do |student, value|
       puts "Assign a value to the #{student} of each student: "
       value = gets.chomp.gsub(/\w+/, &:capitalize).to_sym
@@ -26,12 +26,21 @@ def input_students
   @students
 end
 
+def load_students
+  file = File.open("students.csv","r")
+  file.readlines.each do |line|
+  name, cohort, gender, nationality = line.chomp.split(', ')
+    @students << {name: name, cohort: cohort, gender: gender, nationality: nationality.to_sym}
+  end
+  file.close
+end
+
 def save_students
   # open the file for writing
   file = File.open("students.csv", "w")
   # iterate over the array of students
   @students.each do |student|
-    student_data = [student[:Name], student[:Cohort], student[:Gender], student[:Nationality]]
+    student_data = [student[:name], student[:cohort], student[:gender], student[:nationality]]
     csv_line = student_data.join(", ")
     file.puts csv_line
   end
@@ -51,7 +60,7 @@ end
 #8.1
 def print_student_list
   @students.each.with_index(1) do |student, index|
-    puts "#{index}. #{student[:Name]} - (#{student[:Cohort]} cohort), #{student[:Gender]}, #{student[:Nationality]}".center(100)      
+    puts "#{index}. #{student[:name]} - (#{student[:cohort]} cohort), #{student[:gender]}, #{student[:nationality]}".center(100)      
   end
 end
 
@@ -107,6 +116,7 @@ def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
   puts "3. Save the list to students.csv"
+  puts "4. Load the list from students.csv"
   puts "9. Exit" # 9 because we'll be adding more items  
 end
 
@@ -124,6 +134,8 @@ def process(selection)
     show_students
   when "3"
     save_students
+  when "4"
+    load_students
   when "9"
     exit # this will cause the program to terminate
   else
