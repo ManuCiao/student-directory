@@ -1,3 +1,5 @@
+require 'CSV'
+
 @students = [] # an empty array accessible to all methods
 
 ## PRINT MENU ##
@@ -107,93 +109,28 @@ def save_students
   puts "Give the name of the file you want to save: "
   filename = STDIN.gets.chomp
   # open the file for writing
-  file = File.open("students.csv", "w")
+  #file = File.open(filename, "w+")
   # iterate over the array of students
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort], student[:gender], student[:nationality]]
-    csv_line = student_data.join(", ")
-    file.puts csv_line
+  CSV.open(filename, "wb") do |doc|
+    @students.each do |student|
+      doc << [student[:name], student[:cohort], student[:gender], student[:nationality]]
+    end
   end
-  file.close
+  #file.close
 end
 
 ## LOAD STUDENTS ##
-def load_students
-  if filename = "students.csv"
+def load_students(filename = "students.csv")
+  if filename == "students.csv"
     puts "Which is the file you want to load? Hit 'Enter' to finish."
     filename = STDIN.gets.chomp
   end
-  file = File.open("students.csv","r")
-  file.readlines.each do |line|
+  puts filename
+  File.open(filename,"r") {|line|
     name, cohort, gender, nationality = line.chomp.split(', ')
-    students_append(name, cohort, gender, nationality)
-  end
-  file.close
-end
-
-## TRY LOAD STUDENTS ##
-def try_load_students
-  filename = ARGV.first
-  return if filename.nil?
-  if File.exists?(filename)
-    load_students(filename)
-    puts "Loaded #{@students.count} from #{filename}"
-  else
-    puts "Sorry, #{filename} doesn't exist."
-    exit
-  end
-end
-
-#8.2
-def start_with(students) 
-  puts "Call Students'names with the initial letter:"
-  letter = STDIN.gets.chomp
-  @students.each.with_index(1) do |student, index|
-    if student[:name][0] == letter
-      puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)"      
-    break
-    end
-  end
-end
-
-#8.3
-def short_name_12(students)
-  puts "Call Students'names that are shorten than 12 characthers!"
-  @students.each.with_index(1) do |student, index|
-    if student[:name].length < 12
-      puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)"      
-    end
-  end
-end
-
-#8.4
-def print_while(students)
-  index = 0
-  while index < @students.length
-    puts "#{index + 1}. #{students[index][:name]} (#{students[index][:cohort]} cohort)"      
-    index += 1
-  end
-end
-
-#8.8
-def group_by_cohort(students)
-  
-    #puts "#{students.group_by {|s, v| s[:Cohort]}.map{|s,v| puts "The #{s} Cohort has: "}}" + "\n" + "#{s[:Name]}, #{s[:Gender]}, #{s[:Nationality]}"   
-    puts @students.group_by {|s,v| s[:Cohort]}.map{|s,v| [s,v]}
-    #puts "#{s[:Name]} - (#{s[:Cohort]} cohort), #{s[:Gender]}, #{s[:Nationality]}"      
-      
+    students_append(name, cohort, gender, nationality)}
 end
 
 #nothing happens until we call the methods
-#@students = input_students
-#print_header
-#print_student_list
-#start_with
-#short_name_12
-#print_while
-#puts ''
-#group_by_cohort
-#puts ''
-#print_footer
-try_load_students
+
 interactive_menu
