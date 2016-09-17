@@ -38,7 +38,7 @@ def process(selection)
 end
 
 ## INPUT STUDENTS WITH DEFAULT VALUES##
-def input_students_default
+def input_students
   puts "Please enter the details of each student. To finish, just hit return twice"
   default = :September
   loop do 
