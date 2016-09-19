@@ -1,6 +1,8 @@
 require 'CSV'
 
 @students = [] # an empty array accessible to all methods
+#PRINT THE SOURCE CODE:
+#puts File.read(__FILE__)
 
 ## PRINT MENU ##
 def print_menu
@@ -8,6 +10,7 @@ def print_menu
   puts "2. Show the students"
   puts "3. Save the list to students.csv"
   puts "4. Load the list from students.csv"
+  puts "5. Print the source code"
   puts "9. Exit" # 9 because we'll be adding more items  
 end
 
@@ -30,6 +33,8 @@ def process(selection)
     save_students
   when "4"
     load_students
+  when "5"
+    puts File.read(__FILE__)
   when "9"
     exit # this will cause the program to terminate
   else
@@ -111,24 +116,19 @@ def save_students
   # open the file for writing
   #file = File.open(filename, "w+")
   # iterate over the array of students
-  CSV.open(filename, "wb") do |doc|
-    @students.each do |student|
-      doc << [student[:name], student[:cohort], student[:gender], student[:nationality]]
-    end
+  CSV.open(filename, "w") do |doc|
+    @students.each { |student| doc << [student[:name], student[:cohort], student[:gender], student[:nationality]] }
   end
   #file.close
 end
 
 ## LOAD STUDENTS ##
 def load_students(filename = "students.csv")
-  if filename == "students.csv"
-    puts "Which is the file you want to load? Hit 'Enter' to finish."
-    filename = STDIN.gets.chomp
-  end
-  puts filename
-  File.open(filename,"r") {|line|
-    name, cohort, gender, nationality = line.chomp.split(', ')
-    students_append(name, cohort, gender, nationality)}
+   CSV.foreach(filename) do |line|
+     name, cohort, gender, nationality = line
+     students_append(name, cohort, gender, nationality)
+    end
+  puts "Loaded #{@students.count} students from #{filename}"
 end
 
 #nothing happens until we call the methods
