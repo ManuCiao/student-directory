@@ -1,6 +1,7 @@
 require 'CSV'
 
 @students = [] # an empty array accessible to all methods
+
 #PRINT THE SOURCE CODE:
 #puts File.read(__FILE__)
 
@@ -11,7 +12,7 @@ def print_menu
   puts "3. Save the list to students.csv"
   puts "4. Load the list from students.csv"
   puts "5. Print the source code"
-  puts "9. Exit" # 9 because we'll be adding more items  
+  puts "9. Exit"  
 end
 
 ## INTERACTIVE MENU ##
@@ -36,7 +37,7 @@ def process(selection)
   when "5"
     puts File.read(__FILE__)
   when "9"
-    exit # this will cause the program to terminate
+    exit 
   else
     puts "I don't know what you meant, try again"
   end
@@ -53,7 +54,6 @@ def input_students
       value = STDIN.gets.chomp.gsub(/\w+/, &:capitalize).to_sym
       details[student] = value if !value.empty?          
     end
-    # add the student hash to the array
     @students << details
     note = "Now we have #{@students.count} students"
     if @students.count <= 1
@@ -65,7 +65,6 @@ def input_students
     answer = STDIN.gets.chomp.upcase
     break if answer == "N" || answer.empty?
   end
-  # return the array of students
   @students
 end
 
@@ -113,9 +112,6 @@ end
 def save_students
   puts "Give the name of the file you want to save: "
   filename = STDIN.gets.chomp
-  # open the file for writing
-  #file = File.open(filename, "w+")
-  # iterate over the array of students
   CSV.open(filename, "w") do |doc|
     @students.each { |student| doc << [student[:name], student[:cohort], student[:gender], student[:nationality]] }
   end
@@ -131,6 +127,5 @@ def load_students(filename = "students.csv")
   puts "Loaded #{@students.count} students from #{filename}"
 end
 
-#nothing happens until we call the methods
 
 interactive_menu
